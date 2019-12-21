@@ -15,7 +15,7 @@ def main():
     walls = 50
     ship_y = 250
     velocity = 0
-    score = 0
+    score = 8000
     slope = randint(5, 6)
     sysfont = pygame.font.SysFont(None, 36)
     ship_image = pygame.image.load("ship.png")
@@ -26,6 +26,7 @@ def main():
     fps = 15
     inflate = 0
     global ZANKI
+    boss = False
 
     for xpos in range(walls):
         holes.append(Rect(xpos * 20, 100, 20, 400))
@@ -51,24 +52,34 @@ def main():
                 bg_color[2] = 255
                 fps = 20
                 inflate = -20
-
-            elif score >= 6000:
+            elif score >= 6000 and score < 10000:
                 bg_color[0] = 255
                 bg_color[1] = 0
                 bg_color[2] = 0
-                inflate = 20
+                fps = 25
+                inflate = 0
+            elif score > 10000:
+                bg_color[0] = 127
+                bg_color[1] = 127
+                bg_color[2] = 127
+                boss = True
 
             velocity += -3 if is_space_down else 3
             ship_y += velocity
 
             # 洞窟をスクロール
-            edge = holes[-1].copy()
-            test = edge.move(0, slope)
-            if test.top <= 0 or test.bottom >= 600:
-                slope = randint(5, 6) * (-1 if slope > 0 else 1)
-                edge.inflate_ip(0, inflate)
-            edge.move_ip(20, slope)
-            holes.append(edge)
+            if boss:
+                print('boss')
+                edge = Rect(1000, 50, 20, 500)
+                holes.append(edge)
+            else:
+                edge = holes[-1].copy()
+                test = edge.move(0, slope)
+                if test.top <= 0 or test.bottom >= 600:
+                    slope = randint(5, 6) * (-1 if slope > 0 else 1)
+                    edge.inflate_ip(0, inflate)
+                edge.move_ip(20, slope)
+                holes.append(edge)
             del holes[0]
             holes = [x.move(-20, 0) for x in holes]
 
