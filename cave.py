@@ -15,7 +15,7 @@ def main():
     walls = 50
     ship_y = 250
     velocity = 0
-    score = 8000
+    score = 0
     slope = randint(5, 6)
     sysfont = pygame.font.SysFont(None, 36)
     ship_image = pygame.image.load("ship.png")
